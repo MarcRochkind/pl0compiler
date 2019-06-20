@@ -1,0 +1,13 @@
+# Self loader to read until end of input (read will fail)
+# See PrincOp-80
+	-COPY	2
+	-COPY	4
+	RADD	5
+	ADD		0
+	STOREA	5
+	-COPY	4
+	TR		2
+	TR		10
+	READ	2048
+	TROV	5
+# Copy skips to here on end of input

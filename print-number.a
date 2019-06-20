@@ -1,0 +1,83 @@
+# Prints binary number in mq (up to 999999)
+
+.print-number	add		=2		# ac contains radd a+2
+		storea	prmq_rtn
+		lleft	35				# handle zero as special case
+		trzero	print_zero
+		lright	35
+		radd	=0
+		store	di
+		radd	da
+		storea	st
+cvt1	-radd	=0
+		lleft	35
+		trzero	cvtdone
+		lright	35
+		-div	=10
+		aleft	18
+st		store
+		radd	di
+		add		=1
+		store	di
+		radd	da
+		sub		di
+		storea	st
+		tr		cvt1
+cvtdone	noop
+
+		radd	di
+		store	di2
+		radd	ch
+		sub		di2
+		storea	ch
+		-radd	spaces
+		-store	cpacked
+cvtpk	radd	di2
+		trzero	cvtpr
+		radd	ch
+		add		=1
+		storea	ch
+		-radd	cpacked
+		aleft	6
+		-store	cpacked
+ch		radd	d1			# add in next char
+		aright	18
+		-add	cpacked
+		-store	cpacked
+		radd	di2
+		sub		=1
+		store	di2
+		tr		cvtpk
+
+cvtpr	noop
+		radd	=@cpacked	# was: cpa
+		sub		=1
+		storea	cputcnt
+		radd	=6
+cputcnt	store
+		radd	=@cpacked	# was: cpa
+		sub		=1
+		lright	35			# addr ccount in mq
+		radd	*
+		tr		.print
+prmq_rtn	tr				# return from sub
+
+print_zero	loadmq	=@zero
+		radd	*
+		tr		.print
+		tr		prmq_rtn
+
+zero	hword	6
+		char	"     0"
+da		hword	d1
+di		hword	0
+di2		hword	0
+		res		2			# space for count
+cpacked	res		2
+		hword	998
+		res		2			# force spaces to word boundary
+spaces	char	"      "
+		res		30	# more digits
+d1		res		1	# 1s place
+		hword	999
+
