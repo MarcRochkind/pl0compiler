@@ -1,7 +1,7 @@
 # pl0compiler
 PL/0 compiler for IBM 701.
 
-Entire program is in a single file. Should compile and build with any C compiler. Tested only with Visual Studio.
+Entire program is in a single file. Should compile and build with any C compiler, maybe with a few trivial adjustments. Tested only with Visual Studio.
 
 Assembler output is in "out.a".
 
