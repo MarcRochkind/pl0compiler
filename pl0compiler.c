@@ -62,7 +62,11 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Must have one path arg\n");
 		exit(1);
 	}
-	exit(!compile_pl0(argv[1], ebuf, sizeof(ebuf)));
+	if (!compile_pl0(argv[1], ebuf, sizeof(ebuf))) {
+		fprintf(stderr, "ERROR: %s\n", ebuf);
+		exit(1);
+	}
+	exit(0);
 }
 
 #endif
@@ -114,16 +118,6 @@ int compile_pl0(const char* path, char* ebuf, int ebuf_size)
 	return ebuf[0] == 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
 typedef enum {
 	none, ident, number, lparen, rparen, times, slash, plus,
 	minus, eql, neq, lss, leq, gtr, geq, callsym, beginsym, semicolon,
