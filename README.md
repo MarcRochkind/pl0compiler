@@ -1,5 +1,5 @@
 # pl0compiler
-PL/0 compiler for IBM 701.
+PL/0 compiler for IBM 701, except that procedures are not recursive and a print statement has been added.
 
 Entire program is in a single file. Should compile and build with any C compiler, maybe with a few trivial adjustments. Tested only with Visual Studio.
 
