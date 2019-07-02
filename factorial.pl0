@@ -1,0 +1,21 @@
+var n, rtn;
+
+procedure factorial;
+	var x;
+	begin
+		if n = 1 then
+			rtn := 1;
+		if n > 1 then
+			begin
+				x := n;
+				n := n - 1;
+				call factorial;
+				rtn := x * rtn
+			end
+	end;
+
+begin
+	n := 7;
+	call factorial;
+	print rtn
+end.

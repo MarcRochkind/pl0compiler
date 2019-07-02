@@ -1,0 +1,28 @@
+var n, rtn;
+
+procedure Fib;
+	var rtnsave;
+	begin
+		if n = 0 then rtn := 0;
+		if n = 1 then rtn := 1;
+		if n > 1 then
+			begin
+				n := n - 1;
+				call Fib;
+				rtnsave := rtn;
+				n := n - 1; 
+				call Fib;
+				rtn := rtnsave + rtn; /* Fib(n - 1) + Fib(n - 2) */
+				n := n + 2 /* restore n */
+			end
+	end;
+
+begin
+	n := 0;
+	while n < 10 do
+		begin
+			call Fib;
+			print rtn;
+			n := n + 1
+		end
+end.
