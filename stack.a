@@ -1,0 +1,75 @@
+######### push and trpop routines #########
+
+.push		noop			# push contents of mq
+			add			=2		# save our rtn addr
+			storea		push-rtn
+
+			-radd		.stx	# check for stack overflow
+			-sub		=@stend
+			trplus		sterr_ov
+			-radd		.stx	# push stack
+			-add		=2		# one word
+			-store		.stx
+
+			aleft		18
+			storea		*+2		# store mq on top of stack
+			lleft		35
+			-store		0
+
+push-rtn	tr			0
+
+.trpop		noop			# tra to popped addr; ac is total to pop
+			-sub		=2
+			-store		stpops	# number of half words to pop minus 2 for rtn addr
+			-radd		.stx	# pop stack except for rtn addr
+			-sub		stpops
+			-store		.stx
+			-radd		=@stack	# check for stack underflow
+			-sub		.stx
+			trplus		sterr_un
+			-radd		.stx
+			aleft		18
+			storea		*+1
+			-radd		0 		# store rtn addr (stack top) in sttmp
+			-store		sttmp
+			-radd		.stx	# pop remainder of stack
+			-sub		=2		# one word
+			-store		.stx
+
+			-radd		sttmp	# tra to saved rtn addr
+			aleft		18
+			storea		*+1
+			tr			0
+
+sterr_ov	loadmq		=@err_ov
+			radd		*
+			tr			.print
+			stop		4095
+sterr_un	loadmq		=@err_un
+			radd		*
+			tr			.print
+			stop		4095
+err_ov		hword		14
+			char		"STACK OVERFLOW"
+err_un		hword		15
+			char		"STACK UNDERFLOW"
+
+#temp stuff
+popstr		hword		3
+			char		"POP"
+pushstr		hword		4
+			char		"PUSH"
+mqsave		word		0
+acsave		word		0
+#end of temp stuff
+
+
+stack		res			500		# stack starts here (words)
+stend		word		0
+			word		991		# debugging marker
+.stx		word		stack	# index of top in half words
+			word		992		# debugging marker
+sttmp		word		0
+stpops		word		0
+			word		993
+.levels		res			20		# 10 static levels of proc nesting
